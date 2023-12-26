@@ -19,8 +19,6 @@ public class Appointment {
     @Column(name = "id")
     private Long id;
 
-
-
     @Column(name = "status")
     private AppointmentStatus status = AppointmentStatus.Booked;
 

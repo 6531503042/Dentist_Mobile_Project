@@ -1,13 +1,15 @@
 package app.appointment.service;
 
 import app.appointment.model.Appointment;
+import app.appointment.model.Doctor;
+import app.appointment.model.TimeSlot;
 import app.appointment.repository.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
@@ -32,6 +34,15 @@ public class AppointmentServiceImpl implements AppointmentService {
 //            throw new IllegalStateException("Appointment with ID already exist or present");
 //        }
 //    }
+
+    @Override
+    public boolean isAppointmentSlotAvailable(Doctor doctor, LocalDate appointmentDate, TimeSlot timeSlot) {
+        List<Appointment> existingAppointment = appointmentRepository
+                .findByDoctorAndAppointmentDateAndTimeSlot(doctor, appointmentDate, timeSlot);
+        return existingAppointment.isEmpty();
+    }
+
+
 
     @Override
     public void bookAppointment(@RequestBody Appointment appointment) {
