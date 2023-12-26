@@ -21,17 +21,20 @@ public class Appointment {
 
 
 
+    @Column(name = "status")
     private AppointmentStatus status = AppointmentStatus.Booked;
-    private Timestamp createdAt = new Timestamp(System.currentTimeMillis());
 
+    @Column(name = "created_at")
+    private Timestamp createdAt;
+
+    @Column(name = "appointment_date")
     private LocalDate appointmentDate;
 
-    private Time appointmentStartTime;
-
-    private Time appointmentEndTime;
+    @Enumerated(EnumType.STRING)
+    private TimeSlot timeSlot;
 
     @ManyToOne
-    @JoinColumn(name = "doctorName")
+    @JoinColumn(name = "doctor_id")
     private Doctor doctor;
 
 
@@ -41,6 +44,16 @@ public class Appointment {
     public Appointment() {
         //Default Constructor
         this.createdAt = convertBangkokTime(new Timestamp(System.currentTimeMillis()));
+    }
+
+    public Appointment(Long id, AppointmentStatus status, Timestamp createdAt, LocalDate appointmentDate, TimeSlot timeSlot, Doctor doctor, String appointmentCondition) {
+        this.id = id;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.appointmentDate = appointmentDate;
+        this.timeSlot = timeSlot;
+        this.doctor = doctor;
+        this.appointmentCondition = appointmentCondition;
     }
 
     //Convert timestamp => Bangkok_Time
@@ -54,12 +67,13 @@ public class Appointment {
     }
 
     //Getter & Setter
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
-        id = id;
+        this.id = id;
     }
 
     public AppointmentStatus getStatus() {
@@ -86,20 +100,12 @@ public class Appointment {
         this.appointmentDate = appointmentDate;
     }
 
-    public Time getAppointmentStartTime() {
-        return appointmentStartTime;
+    public TimeSlot getTimeSlot() {
+        return timeSlot;
     }
 
-    public void setAppointmentStartTime(Time appointmentStartTime) {
-        this.appointmentStartTime = appointmentStartTime;
-    }
-
-    public Time getAppointmentEndTime() {
-        return appointmentEndTime;
-    }
-
-    public void setAppointmentEndTime(Time appointmentEndTime) {
-        this.appointmentEndTime = appointmentEndTime;
+    public void setTimeSlot(TimeSlot timeSlot) {
+        this.timeSlot = timeSlot;
     }
 
     public Doctor getDoctor() {
